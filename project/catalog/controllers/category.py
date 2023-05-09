@@ -4,10 +4,10 @@ from django.http import HttpRequest
 
 
 class CategoryController:
-    def get_page_data_for_admin(self):
+    def get_page_data_for_admin(self) -> list:
         return Category.get_annotated_list()
 
-    def get_page_data_for_manager(self, request: HttpRequest):
+    def get_page_data_for_manager(self, request: HttpRequest) -> list:
         return Category.get_annotated_list(request.user.fixed_category)
 
     def get_page_data(self, request: HttpRequest) -> dict:

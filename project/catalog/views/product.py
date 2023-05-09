@@ -1,6 +1,7 @@
 from catalog.controllers.product import product_controller
 from catalog.forms import ProductForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.views import View
 
@@ -8,7 +9,7 @@ from .base import Base
 
 
 class ProductView(LoginRequiredMixin, View):
-    def get(self, request, category_id):
+    def get(self, request: HttpRequest, category_id: int) -> HttpResponse:
         return render(
             request,
             "products.html",
@@ -18,7 +19,9 @@ class ProductView(LoginRequiredMixin, View):
             },
         )
 
-    def post(self, request, category_id):
+    def post(
+        self, request: HttpRequest, category_id: int
+    ) -> HttpResponse | HttpResponseRedirect:
         form = ProductForm(request.POST)
         if not form.is_valid():
             return render(
@@ -35,7 +38,9 @@ class ProductView(LoginRequiredMixin, View):
 
 
 class ProductDetailView(LoginRequiredMixin, Base):
-    def get(self, request, category_id, product_id):
+    def get(
+        self, request: HttpRequest, category_id: int, product_id: int
+    ) -> HttpResponse:
         product = product_controller.get_product(product_id)
         form = ProductForm(instance=product)
         return render(
@@ -47,7 +52,9 @@ class ProductDetailView(LoginRequiredMixin, Base):
             },
         )
 
-    def post(self, request, category_id, product_id):
+    def post(
+        self, request: HttpRequest, category_id: int, product_id: int
+    ) -> HttpResponse | HttpResponseRedirect:
         form = ProductForm(request.POST)
         if not form.is_valid():
             return render(
@@ -61,6 +68,8 @@ class ProductDetailView(LoginRequiredMixin, Base):
         product_controller.update_product(form, category_id, product_id)
         return redirect(f"/categories/{category_id}/products/")
 
-    def delete(self, request, category_id, product_id):
+    def delete(
+        self, request: HttpRequest, category_id: int, product_id: int
+    ) -> HttpResponseRedirect:
         product_controller.delete_product(product_id)
         return redirect(f"/categories/{category_id}/products/")

@@ -31,7 +31,7 @@ class Category(MP_Node):
 
     node_order_by = ["name"]
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.name}"
 
     def get_child_ids(self) -> list[int]:
@@ -46,7 +46,7 @@ class Product(models.Model):
     description = models.CharField(max_length=300)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.name}"
 
 
@@ -54,5 +54,5 @@ class Group(models.Model):
     name = models.CharField(max_length=130)
     products = models.ManyToManyField(Product, related_name="groups")
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.name}"

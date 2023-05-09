@@ -1,4 +1,5 @@
 from catalog.models import Category, Group, Product
+from django.db.models import QuerySet
 from django.forms import BaseForm
 from django.http import HttpRequest
 
@@ -26,7 +27,9 @@ class ProductController:
     def get_ids_categories(self, category: Category) -> list[int]:
         return [category.id, *category.get_child_ids()]
 
-    def get_products(self, ids_categories: list[int], _filter: dict):
+    def get_products(
+        self, ids_categories: list[int], _filter: dict
+    ) -> QuerySet[Product]:
         products = Product.objects.filter(category_id__in=ids_categories)
         products = products.filter(**_filter)
         return products.distinct()
@@ -46,7 +49,7 @@ class ProductController:
     def create_product(self, form: BaseForm, category_id: int):
         Product.objects.create(**form.cleaned_data, category_id=category_id)
 
-    def get_product(self, product_id: int):
+    def get_product(self, product_id: int) -> Product:
         return Product.objects.get(id=product_id)
 
     def update_product(self, form: BaseForm, category_id: int, product_id: int):
