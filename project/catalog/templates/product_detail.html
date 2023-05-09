@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>product</title>
+        <style>
+            .about {
+                display:inline-block;
+               }
+           </style>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+    </head>
+    <body>
+        {{context}}
+       <form method="post">{% csrf_token %}
+        {{ product_form }}
+
+        <p><b>Групы</b></p>
+        <p>
+            {% for group in groups %}
+            <p>{{group.name}}</p>
+            {% endfor %}
+            
+        </p>
+
+        <input type="hidden" name="_method" value="post">
+        <input type="submit" value="Сохранить">
+    </form>
+          
+    </body>
+</html>

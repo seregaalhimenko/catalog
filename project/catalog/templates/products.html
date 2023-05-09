@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>products</title>
+        <style>
+            .about {
+                display:inline-block;
+               }
+            .right{
+                float: right;
+            }
+            .left{
+                float: left;
+            }
+           </style>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+    </head>
+    <body>
+        
+        <div class="left">
+            <h1> {{ category.name }} </h1>
+            <div> 
+                <form method="post">{% csrf_token %}
+                    {{ form }}
+                    <input type="hidden" name="_method" value="post">
+                    <input type="submit" value="Добавить">
+                </form>
+            </div> 
+            
+            {% for product in products %}
+                <div>
+                    <div class="about">
+                        <a href="/categories/{{ category.id }}/products/{{ product.id }}/">{{ product.name }}</a>
+                    </div>
+                    <div class="about">
+                        <form action="/categories/{{ category.id }}/products/{{product.id}}/" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="_method" value="delete">
+                            <input type="submit" value="Удалить">
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}   
+        </div>
+        <div class="right">
+                <div>
+                    <div class="about">
+                        <form method="get">
+                            <p><b>Групы</b></p>
+                            <p>
+                                {% for group in groups %}
+                                <input type="checkbox" name="groups" value="{{group.id}}" >{{group.name}}<Br>
+                                {% endfor %}
+                                
+                            </p>
+                            <p>Цена:<input placeholder="Цена" name="price"></p>
+                            <p>Артикул:<input placeholder="Артикул" name="vendor_code"></p>
+                            <p>Название:<input placeholder="Название" name="name"></p>
+                            <p>Описание:<input placeholder="Описание" name="description"></p>
+                            <input type="hidden" name="_method" value="post">
+                            <p><input type="submit" value="Поиск"></p>
+                           </form>
+                    </div>
+                </div>
+        </div>
+    </body>
+</html>
